@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+h1 {
+	padding-top: 30px;
+}
+
+#projectname {
+  font: 300% Tahoma, Arial, sans-serif;
+  margin: 0px;
+  padding: 2px 0px;
+}
+
+#projectnumber {
+  font: 50% Tahoma, Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+#projectbrief {
+  font: 120% Tahoma, Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+.modal-header {
+	background-color: rgb(119, 59, 204);
+	color: #fff;
+}
+
+.modal-close {
+	color: #fff;
+}
+
+.modal-content {
+	border: 0px solid;
+}
+
+.json-files {
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
+}
+
+.file-drop {
+	border: 2px dashed;
+	border-radius: 4px;
+	color: #868e96;
+	height: 100px;
+	width: 100%;
+	text-align: center;
+	padding-top: 30px;
+}
+
+.navbar-nav > li > a {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.navbar {
+    min-height: 4rem;
+    background-color: rgb(119, 59, 204);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.05), inset 0 -1px 0 rgba(0,0,0,.1);
+    min-height: 32px;
+    margin: 0;
+    padding: 0;
+}
+
+.op-link {
+	color: #b7b4b8;
+}
+
+.partmc-list thead th,
+.partmc-list tbody tr:last-child {
+	border-bottom: 1px solid #d6d6d6; /*non-RGB fallback */
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.partmc-list tbody th,
+.partmc-list tbody td {
+	border-bottom: 1px solid #e6e6e6; /*non-RGB fallback */
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.partmc-list tbody tr:last-child th,
+.partmc-list tbody tr:last-child td {
+	border-bottom: 0;
+}
+
+.partmc-list tbody tr:nth-child(odd) td,
+.partmc-list tbody tr:nth-child(odd) th {
+	background-color: #eeeeee; /*non-RGB fallback */
+	background-color: rgba(0,0,0,0.04);
+}
+
+.table-head-species {
+	background-color: rgb(119, 59, 204);
+	color: #fff;
+}
