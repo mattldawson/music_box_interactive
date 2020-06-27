@@ -1,15 +1,59 @@
 {% extends "dashboard/layout.html" %}
 {% block content %}
       <section class="jumbotron text-center">
-        <div class="container">
+        <div class="container" id="run-options">
+        </div>
+      </section>
+      <script>
+        function checkStatus() {
+          $.ajax({
+            url: 'model_driver/check_status',
+            type: 'get',
+            success: function(response) {
+              if( response.status == "not started" ) {
+                $("#run-options").html( `
           <h1 class="jumbotron-heading">Run the model</h1>
           <p class="lead text-muted">
             Run the model here. Once the run is finished you will be able
             to visualize and download the results.
           </p>
           <p>
-            <a href="#" class="btn btn-primary my-2">Run</a>
+            <a href="#" class="btn btn-primary my-2" id="run-model">Run</a>
           </p>
-        </div>
-      </section>
+                `);
+              } else if( response.status == "running" ) {
+                $("#run-options").html(`
+          <p class="lead text-muted">
+            Please wait, the model is running.
+          </p>
+                `);
+              } else if( response.status == "done" ) {
+                $("#run-options").html(`
+          <h1 class="jumbotron-heading">The model is done!</h1>
+          <p class="lead text-muted">
+            You can now visualize and download the results, or re-run the model.
+          </p>
+          <p>
+            <a href="#" class="btn btn-primary my-2" id="run-model">Rerun</a>
+          </p>
+                `);
+              }
+            }
+          })
+        }
+
+        $(document).ready(function() {
+          $("#run-options").on('click', '#run-model', function() {
+            $.ajax({
+              url: 'model_driver/run',
+              type: 'get'
+            })
+            checkStatus();
+          })
+          checkStatus();
+          setInterval(checkStatus,1000);
+        })
+      </script>
+
+
 {% endblock %}

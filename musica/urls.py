@@ -18,6 +18,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('dashboard.urls')),
+    path('model_driver/', include('model_driver.urls')),
     path('plots/', include('plots.urls')),
     path('admin/', admin.site.urls),
 ]
