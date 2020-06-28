@@ -1,10 +1,101 @@
 {% extends "dashboard/layout.html" %}
 {% block content %}
-      <div class="container">
-        <div class="row mx-md-n5 flex-xl-nowrap">
-          <main class="col-12 px-md-5 bd-content">
-            <p>Chemical reactions</p>
-          </main>
+      <div class="container-fluid mx-0 px-0 h-100">
+        <div class="row mx-md-0 xl-flex-nowrap h-100 w-100">
+          <div class="col-md-2 mx-0 px-0 h-100 column-sidenav">
+            <ul class="list-group list-group-flush list-group-sidenav" id="reaction-list">
+            </ul>
+          </div>
+          <div class="col-md-10 m-0 p-0 h-100 w-100" id="reaction-detail">
+            <div class="jumbotron h-100">
+              <h1 class="display-4">Chemical reactions</h1>
+              <hr>
+              <p>Select a reaction from the left to see its reactants, products, and rate parameters</p>
+            </div>
+          </div>
         </div>
       </div>
+      <script>
+
+        // Populate the detail page with reaction information
+        function reactionDetail(reaction_id) {
+          var model_data = JSON.parse(localStorage.getItem("model_data"));
+          for (key in model_data.mechanism.photolysis) {
+            var reaction = model_data.mechanism.photolysis[key];
+            var rxn_id   = reactionId(reaction, model_data.mechanism.photolysis);
+            if (rxn_id  == reaction_id) {
+              var rxn_name = reactionName('photolysis', reaction, model_data.mechanism.photolysis);
+              var reaction_detail_html = `
+                <div class="jumbotron h-100">
+                  <h1 class="display-4">`+rxn_name+`</h1>
+                  <hr class="my-4">
+                  <ul class="list-group">`
+              for (key in reaction) {
+                reaction_detail_html +=
+                    `<li class="list-group-item"><b>` + key + `:</b>` + reaction[key] + `</li>`
+              }
+              reaction_detail_html += `
+                  </ul>
+                </div>`;
+              $('#reaction-detail').html(reaction_detail_html);
+              break;
+            }
+          }
+          for (key in model_data.mechanism.reactions) {
+            var reaction = model_data.mechanism.reactions[key];
+            var rxn_id   = reactionId(reaction, model_data.mechanism.reactions);
+            if (rxn_id  == reaction_id) {
+              var rxn_name = reactionName( 'molecular', reaction, model_data.mechanism.reactions);
+              var reaction_detail_html = `
+                <div class="jumbotron h-100">
+                  <h1 class="display-4">`+rxn_name+`</h1>
+                  <hr class="my-4">
+                  <ul class="list-group">`
+              for (key in reaction) {
+                reaction_detail_html +=
+                    `<li class="list-group-item"><b>` + key + `:</b>` + reaction[key] + `</li>`
+              }
+              reaction_detail_html += `
+                  </ul>
+                </div>`;
+              $('#reaction-detail').html(reaction_detail_html);
+              break;
+            }
+          }
+        }
+
+        // get the reactions and populate the sidebar
+        $(document).ready(function() {
+          $.ajax({
+            url: 'model_driver/mechanism_data',
+            type: 'get',
+            dataType: "json",
+            success: function(response) {
+              var model_data = response;
+              var mech = model_data.mechanism;
+              for (key in mech.photolysis) {
+                var rxn_id   = reactionId( mech.photolysis[key], mech.photolysis );
+                var rxn_name = reactionName( 'photolysis', mech.photolysis[key], mech.photolysis );
+                $('#reaction-list').append('<li class="list-group-item list-group-item-sidenav" id="' +
+                                           rxn_id + '">' + rxn_name + '</li>');
+              }
+              for (key in mech.reactions) {
+                rxn_id   = reactionId( mech.reactions[key], mech.reactions );
+                rxn_name = reactionName( 'molecular', mech.reactions[key], mech.reactions );
+                $('#reaction-list').append('<li class="list-group-item list-group-item-sidenav" id="' +
+                                           rxn_id + '">' + rxn_name + '</li>');
+              }
+              localStorage.setItem("model_data", JSON.stringify(model_data));
+            },
+            error: function(xhr, opts, error) {
+              $('reaction-detail').text(error);
+            }
+          });
+          $('#reaction-list').on('click', '.list-group-item-sidenav', function() {
+            $('.list-group-item-sidenav').removeClass("list-group-item-sidenav-active");
+            $(this).addClass("list-group-item-sidenav-active");
+            reactionDetail($(this).attr('id'));
+          });
+        });
+      </script>
 {% endblock %}
