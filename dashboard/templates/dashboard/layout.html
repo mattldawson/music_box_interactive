@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang='en'>
+<html lang='en' style="height:100vh;">
   <head>
     <title>MusicBox Interactive</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'dashboard/favicon.ico' %}"/>
@@ -34,7 +34,7 @@
     </script>
 
   </head>
-  <body>
+  <body style="height:100vh;">
   <div data-role="page">
 
     <!-- Title -->
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Page content -->
-    <div data-role="ui-content">
+    <div data-role="ui-content" style="height:100vh;">
       {% block content %}
       <strong>Error: missing content block</strong>
       {% endblock %}

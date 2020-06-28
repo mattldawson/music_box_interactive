@@ -1,10 +1,71 @@
 {% extends "dashboard/layout.html" %}
 {% block content %}
-      <div class="container">
-        <div class="row mx-md-n5 flex-xl-nowrap">
-          <main class="col-12 px-md-5 bd-content">
-            <p>Chemical species</p>
-          </main>
+      <div class="container-fluid mx-0 px-0 h-100">
+        <div class="row mx-md-0 xl-flex-nowrap h-100 w-100">
+          <div class="col-md-2 mx-0 px-0 h-100 column-sidenav">
+            <ul class="list-group list-group-flush list-group-sidenav" id="species-list">
+            </ul>
+          </div>
+          <div class="col-md-10 m-0 p-0 h-100 w-100" id="species-detail">
+            <div class="jumbotron h-100">
+              <h1 class="display-4">Chemical species properties</h1>
+              <hr>
+              <p>Select a species from the left to see its physical/chemical properties and model parameters</p>
+            </div>
+          </div>
         </div>
       </div>
+      <script>
+
+        // Populate the detail page with species information
+        function speciesDetail(species_name) {
+          var model_data = JSON.parse(localStorage.getItem("model_data"));
+          for (key in model_data.mechanism.molecules) {
+            species = model_data.mechanism.molecules[key];
+            if (species.moleculename == species_name) {
+              var species_detail_html = `
+                <div class="jumbotron h-100">
+                  <h1 class="display-4">`+species_name+`</h1>
+                  <hr class="my-4">
+                  <ul class="list-group">`
+              for (key in species) {
+                species_detail_html +=
+                    `<li class="list-group-item"><b>` + key + `:</b>` + species[key] + `</li>`
+              }
+              species_detail_html += `
+                  </ul>
+                </div>`;
+              $('#species-detail').html(species_detail_html);
+              break;
+            }
+          }
+        }
+
+        // get the species and populate the sidebar
+        $(document).ready(function() {
+          $.ajax({
+            url: 'model_driver/mechanism_data',
+            type: 'get',
+            dataType: "json",
+            success: function(response) {
+              var model_data = response;
+              var mech = model_data.mechanism;
+              for (key in mech.molecules) {
+                species = mech.molecules[key].moleculename;
+                $('#species-list').append('<li class="list-group-item list-group-item-sidenav" id="' +
+                                          species + '">' + species + '</li>');
+              }
+              localStorage.setItem("model_data", JSON.stringify(model_data));
+            },
+            error: function(xhr, opts, error) {
+              $('species-detail').text(error);
+            }
+          });
+          $('#species-list').on('click', '.list-group-item-sidenav', function() {
+            $('.list-group-item-sidenav').removeClass("list-group-item-sidenav-active");
+            $(this).addClass("list-group-item-sidenav-active");
+            speciesDetail($(this).text());
+          });
+        });
+      </script>
 {% endblock %}

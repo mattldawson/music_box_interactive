@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+div {
+  overflow: auto
+}
+
 h1 {
 	padding-top: 30px;
 }
@@ -20,6 +24,42 @@ h1 {
   font: 120% Tahoma, Arial, sans-serif;
   margin: 0px;
   padding: 0px;
+}
+
+.oi {
+  font-size: 25px;
+}
+
+.side-list {
+  width: 250px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 60px;
+}
+
+.size-list-item {
+  width: 100%;
+  display: block;
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+}
+
+.column-sidenav {
+  background-color: #ad97cf;
+}
+
+.list-group-item-sidenav {
+  background-color: #ad97cf;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.list-group-item-sidenav-active {
+  background-color: #926bcf;
 }
 
 .modal-header {
