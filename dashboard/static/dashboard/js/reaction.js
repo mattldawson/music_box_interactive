@@ -2,25 +2,32 @@ function deepEqual(a, b) {
   return JSON.stringify(a) == JSON.stringify(b);
 }
 
-function reactionId(reaction, reactions) {
-  var instance = 0;
-  var id = '';
-  for (key in reactions) {
-    if (deepEqual(reaction.reactants, reactions[key].reactants)) {
-      instance += 1;
-      if (deepEqual(reaction, reactions[key])) {
-        for (react_key in reaction.reactants) {
-          if (react_key == 0) {
-            id = reaction.reactants[react_key];
-          } else {
-            id += '_' + reaction.reactants[react_key];
-          }
-        }
-        id += '_' + instance;
-        break;
-      }
-    }
+// Id without the count at the end
+function rawId(reaction) {
+  if(reaction.reactants.length == 0){
+    id = "None";
+  } else {
+    id = reaction.reactants.sort().join("_");
   }
+
+  if (reaction.reactionBranch) {
+    id += "_" + reaction.reactionBranch;
+  }
+
+  if (reaction.troe) {
+    id += "_M";
+  }
+  return id;
+}
+
+function reactionId(reaction, reactions) {
+  var id = rawId(reaction);
+  var count = 1;
+  for (r in reactions) {
+    if (deepEqual(reactions[r], reaction)) break;
+    if (rawId(reactions[r]) == id) count++;
+  }
+  id += "_" + count;
   return id;
 }
 

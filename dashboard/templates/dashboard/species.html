@@ -30,7 +30,7 @@
                   <ul class="list-group">`
               for (key in species) {
                 species_detail_html +=
-                    `<li class="list-group-item"><b>` + key + `:</b>` + species[key] + `</li>`
+                    `<li class="list-group-item"><b>` + key + `:</b> ` + JSON.stringify(species[key]) + `</li>`
               }
               species_detail_html += `
                   </ul>
