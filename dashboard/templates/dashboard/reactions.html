@@ -31,8 +31,32 @@
                   <hr class="my-4">
                   <ul class="list-group">`
               for (key in reaction) {
-                reaction_detail_html +=
-                    `<li class="list-group-item"><b>` + key + `:</b> ` + JSON.stringify(reaction[key]) + `</li>`
+                if (key == 'reactants') {
+                  var reactants = ''
+                  for (reactant in reaction[key]) {
+                    reactants += reaction[key][reactant].replace(/^"(.+(?="$))"$/, '$1') + ', ';
+                  }
+                  reactants = reactants.replace(/\, $/, '');
+                  reaction_detail_html +=
+                    `<li class="list-group-item"><b>` + key + `:</b> ` + reactants + `</li>`
+                } else if (key == 'products') {
+                  var products = ''
+                  for (product in reaction[key]) {
+                    var coeff = reaction[key][product].coefficient.toString().replace(/^"(.+(?="$))"$/, '$1');
+                    if (reaction[key][product].coefficient != '1')
+                      products += coeff;
+                    products += reaction[key][product].molecule.replace(/^"(.+(?="$))"$/, '$1') + ', ';
+                  }
+                  products = products.replace(/\, $/, '');
+                  reaction_detail_html +=
+                    `<li class="list-group-item"><b>` + key + `:</b> ` + products + `</li>`
+                } else {
+                  var value = JSON.stringify(reaction[key]);
+                  value = value.replace(/^"(.+(?="$))"$/, '$1');
+                  if (value == 'null') value = '';
+                  reaction_detail_html +=
+                      `<li class="list-group-item"><b>` + key + `:</b> ` + value + `</li>`
+                }
               }
               reaction_detail_html += `
                   </ul>
@@ -52,8 +76,32 @@
                   <hr class="my-4">
                   <ul class="list-group">`
               for (key in reaction) {
-                reaction_detail_html +=
-                    `<li class="list-group-item"><b>` + key + `:</b>` + reaction[key] + `</li>`
+                if (key == 'reactants') {
+                  var reactants = ''
+                  for (reactant in reaction[key]) {
+                    reactants += reaction[key][reactant].replace(/^"(.+(?="$))"$/, '$1') + ', ';
+                  }
+                  reactants = reactants.replace(/\, $/, '');
+                  reaction_detail_html +=
+                    `<li class="list-group-item"><b>` + key + `:</b> ` + reactants + `</li>`
+                } else if (key == 'products') {
+                  var products = ''
+                  for (product in reaction[key]) {
+                    var coeff = reaction[key][product].coefficient.toString().replace(/^"(.+(?="$))"$/, '$1');
+                    if (reaction[key][product].coefficient != '1')
+                      products += coeff;
+                    products += reaction[key][product].molecule.replace(/^"(.+(?="$))"$/, '$1') + ', ';
+                  }
+                  products = products.replace(/\, $/, '');
+                  reaction_detail_html +=
+                    `<li class="list-group-item"><b>` + key + `:</b> ` + products + `</li>`
+                } else {
+                  var value = JSON.stringify(reaction[key]);
+                  value = value.replace(/^"(.+(?="$))"$/, '$1');
+                  if (value == 'null') value = '';
+                  reaction_detail_html +=
+                      `<li class="list-group-item"><b>` + key + `:</b> ` + value + `</li>`
+                }
               }
               reaction_detail_html += `
                   </ul>

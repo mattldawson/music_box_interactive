@@ -20,6 +20,15 @@
           <p>
             <a href="#" class="btn btn-primary my-2" id="run-model">Run</a>
           </p>
+          <p class="lead text-muted">
+            Before the model runs, you can check out the chemical species properties
+            by clicking on the
+            <span class="oi oi-beaker"></span>
+            icon in the navigation bar, or the chemical reaction properties by
+            clicking on the
+            <span class="oi oi-random"></span>
+            icon.
+          </p>
                 `);
               } else if( response.status == "running" ) {
                 $("#run-options").html(`
@@ -35,6 +44,14 @@
           </p>
           <p>
             <a href="#" class="btn btn-primary my-2" id="run-model">Rerun</a>
+          </p>
+          <p class="lead text-muted">
+            To visualize the results, click on the
+            <span class="oi oi-graph"></span>
+            icon in the navigation bar. You can download the results as a
+            NetCDF file by clicking on the
+            <span class="oi oi-data-transfer-download"></span>
+            icon.
           </p>
                 `);
               }
