@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json
 import os.path
 import subprocess
@@ -31,3 +31,12 @@ def mechanism_data(request):
     mechanism_path = os.path.join(os.environ['MUSIC_BOX_OUTPUT_DIR'], "molec_info.json")
     mech_json = json.load(open(mechanism_path, 'r'))
     return JsonResponse(mech_json)
+
+def download(request):
+    outfile_path = os.path.join(os.environ['MUSIC_BOX_OUTPUT_DIR'], "MusicBox_output.nc")
+    if os.path.isfile(outfile_path):
+        with open(outfile_path, 'rb') as outfile:
+            response = HttpResponse(outfile.read(), content_type="application/x-netcdf")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(outfile_path)
+            return response
+    return HttpResponseBadRequest('Missing output file', status=405)
