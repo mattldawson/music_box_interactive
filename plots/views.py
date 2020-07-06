@@ -28,7 +28,7 @@ def get(request):
             units = ncf.variables[prop].units
             axes.plot(time, var, "-", label=prop.replace("_"," "))
 
-        axes.set_xlabel(r"time / s")
+        axes.set_xlabel(r"time / h")
         axes.set_ylabel(units.decode('utf-8'))
         axes.legend()
         axes.grid(True)
