@@ -33,10 +33,10 @@ def get(request):
 
         length = time[-1]
         grad = length / 6
-        tick_spacing = [60, 3600, 7200, 14400, 18000, 21600, 25200, 36000, 43200, 86400, 172800, 345600, 604800]
-        base = min(tick_spacing, key=lambda x:abs(x-grad))
-
-        axes.xaxis.set_major_locator(plt.MultipleLocator(base))
+        if grad < 700000:
+            tick_spacing = [60, 3600, 7200, 14400, 18000, 21600, 25200, 36000, 43200, 86400, 172800, 345600, 604800]
+            base = min(tick_spacing, key=lambda x:abs(x-grad))
+            axes.xaxis.set_major_locator(plt.MultipleLocator(base))
 
         axes.set_xlabel(r"time / s")
         axes.set_ylabel(units.decode('utf-8'))
