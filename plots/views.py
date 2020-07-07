@@ -6,6 +6,7 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from matplotlib import pylab
+from matplotlib.ticker import *
 import matplotlib.pyplot as plt
 from pylab import *
 import PIL, PIL.Image, io
@@ -22,16 +23,27 @@ def get(request):
 
         time = ncf.variables["time"].data.copy()
 
+
         props = request.GET.get('props', None).split(",")
         for prop in props:
             var   = ncf.variables[prop].data.copy()
             units = ncf.variables[prop].units
             axes.plot(time, var, "-", label=prop.replace("_"," "))
 
+
+        length = len(time)
+        grad = length / 6
+        tick_spacing = [60, 3600, 7200, 14400, 18000, 21600, 25200, 36000, 43200, 86400]
+        base = min(tick_spacing, key=lambda x:abs(x-grad))
+
+        plt.xticks(np.arange(0, length, base))
+
         axes.set_xlabel(r"time / s")
         axes.set_ylabel(units.decode('utf-8'))
         axes.legend()
         axes.grid(True)
+        
+
 
         # Store image in a string buffer
         buffer = io.BytesIO()
